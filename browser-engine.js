@@ -2,7 +2,7 @@
 const engineState={status:'idle',epoch:0,progress:0,message:'Ready for your first experiment.',result:null,
   history:[],model_ready:false,model_layers:null};
 try {
-  const saved=JSON.parse(localStorage.getItem('digit-lab-history-v1')||'[]');
+  const saved=JSON.parse(localStorage.getItem('digit-lab-portfolio-history-v1')||'[]');
   engineState.history=saved.filter(r=>Array.isArray(r.layers)&&r.layers.every(l=>
     Number.isInteger(l.neurons)&&l.neurons>=1&&l.neurons<=256&&['relu','sigmoid','tanh'].includes(l.activation))
     &&Number.isFinite(r.accuracy)&&Array.isArray(r.examples)).slice(-30);
@@ -15,7 +15,7 @@ engine.onmessage=({data})=>{
     if(data.state.result){
       engineState.history.push(data.state.result);
       engineState.history=engineState.history.slice(-30);
-      try{localStorage.setItem('digit-lab-history-v1',JSON.stringify(engineState.history));}catch{}
+      try{localStorage.setItem('digit-lab-portfolio-history-v1',JSON.stringify(engineState.history));}catch{}
     }
   }else if(data.type==='reply'){
     const request=pending.get(data.id);if(!request)return;
